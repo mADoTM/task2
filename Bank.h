@@ -23,17 +23,17 @@ public:
 
     virtual int getComissionPercent() const { return 0; };
 
-    Client* getClientByFio(std::string fio);
+    Client* getClientByFio(const std::string& fio);
 
     void addClient(Client* client);
 
-    void removeClientByFio(std::string fio);
+    void removeClientByFio(const std::string& fio);
 
-    bool hasClientWithFio(std::string fio);
+    bool hasClientWithFio(const std::string& fio);
 
-    void transferMoneyInnerClients(std::string from, std::string to, double value);
+    void transferMoneyInnerClients(const std::string& from, const std::string& to, double value);
 
-    void transferMoneyToAnotherBankClient(std::string from, Bank* anotherBank, std::string to, double value);
+    void transferMoneyToAnotherBankClient(const std::string& from, Bank* anotherBank, const std::string& to, double value);
 };
 
 #endif //TASK2_BANK_H

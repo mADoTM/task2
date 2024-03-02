@@ -4,7 +4,6 @@
 #include "PhysicalClient.h"
 #include "Client.h"
 #include <iostream>
-#include <clocale>
 #include <vector>
 #include <map>
 
@@ -172,14 +171,14 @@ void addUserToBank() {
     cout << "What's account number do u wanna set to ur account? " << endl;
     cin >> accNumber;
 
-    Account *account = new Account(accNumber);
+    auto *account = new Account(accNumber);
 
     if (isJur == "y" || isJur == "Y") {
-        JurClient* client = new JurClient(account, fio);
+        auto *client = new JurClient(account, fio);
         cout << "Jur client" << endl;
         banks.find(bankName)->second->addClient(client);
     } else {
-        PhysicalClient* client = new PhysicalClient(account, fio);
+        auto *client = new PhysicalClient(account, fio);
         cout << "Physical client" << endl;
         banks.find(bankName)->second->addClient(client);
     }
@@ -197,7 +196,7 @@ void printAllBanksUsers() {
         return;
     }
 
-    map<std::string, Client*> clients = banks.find(bankName)->second->getClients();
+    map<std::string, Client *> clients = banks.find(bankName)->second->getClients();
 
     if (clients.empty()) {
         cout << bankName << " has not any clients yet(" << endl;
@@ -206,9 +205,9 @@ void printAllBanksUsers() {
 
     int count = 1;
 
-    for (auto it = clients.begin(); it != clients.end(); ++it) {
-        cout << "Client #" << count << " : " << it->second->getFio() << " . Bank account number - "
-             << it->second->getAccount()->getNumber() << " Balance - " << it->second->getAccount()->getBalance()
+    for (auto & client : clients) {
+        cout << "Client #" << count << " : " << client.second->getFio() << " . Bank account number - "
+             << client.second->getAccount()->getNumber() << " Balance - " << client.second->getAccount()->getBalance()
              << std::endl;
         count++;
     }
@@ -218,9 +217,9 @@ void printAllBanksUsers() {
 void printAllBanks() {
     int count = 1;
     cout << "~~~~~~~~~~~~~~BANK LIST~~~~~~~~~~~~~~~~" << endl;
-    for (auto it = banks.begin(); it != banks.end(); ++it) {
-        cout << "Bank #" << count << " : " << it->second->getName() << ". Bank commission is - "
-             << it->second->getComissionPercent() << std::endl;
+    for (auto &bank: banks) {
+        cout << "Bank #" << count << " : " << bank.second->getName() << ". Bank commission is - "
+             << bank.second->getComissionPercent() << std::endl;
         count++;
     }
     cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
@@ -240,7 +239,6 @@ void printMainMenu() {
 }
 
 int main() {
-    setlocale(LC_ALL, "Russian");
     std::string input;
 
     while (true) {
@@ -251,28 +249,28 @@ int main() {
         if (input == "exit") {
             break;
         }
-        if (input == "1") {
+        if (input == "1" || input == "banks") {
             printAllBanks();
         }
-        if (input == "2") {
+        if (input == "2" || input == "users") {
             printAllBanksUsers();
         }
-        if (input == "3") {
+        if (input == "3" || input == "user") {
             addUserToBank();
         }
-        if (input == "4") {
+        if (input == "4" || input == "rmu") {
             removeUserFromBank();
         }
-        if (input == "5") {
+        if (input == "5" || input == "money") {
             addMoneyToAccount();
         }
-        if (input == "6") {
+        if (input == "6" || input == "take") {
             withdrawAccount();
         }
-        if (input == "7") {
+        if (input == "7" || input == "inner") {
             transferMoneyInner();
         }
-        if (input == "8") {
+        if (input == "8" || input == "outer") {
             transferMoneyOuter();
         }
     }

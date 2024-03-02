@@ -8,11 +8,13 @@
 #include "Client.h"
 
 
-class JurClient: public Client {
+class JurClient : public Client {
 public:
-    JurClient(Account* account, std::string basicString);
+    JurClient(Account *account, std::string basicString);
 
     void transferMoneyToAnotherBankClient(double value, JurClient *another, int bankFromPercent, int bankToPercent);
+
+    bool canReceiveMoneyFromOuter() override { return true; }
 };
 
 #endif //TASK2_JURCLIENT_H

@@ -11,7 +11,7 @@ using namespace std;
 Bank::Bank() :
         _balance(0) {}
 
-bool Bank::hasClientWithFio(std::string fio) {
+bool Bank::hasClientWithFio(const std::string& fio) {
     return _clients.find(fio) != _clients.end();
 }
 
@@ -19,11 +19,11 @@ void Bank::addClient(Client* client) {
     _clients.insert(make_pair(client->getFio(), client));
 }
 
-Client* Bank::getClientByFio(std::string fio) {
+Client* Bank::getClientByFio(const std::string& fio) {
     return _clients.find(fio)->second;
 }
 
-void Bank::transferMoneyInnerClients(std::string from, std::string to, double value) {
+void Bank::transferMoneyInnerClients(const std::string& from, const std::string& to, double value) {
     if (!hasClientWithFio(from) || !hasClientWithFio(to))
         return;
 
@@ -35,25 +35,23 @@ void Bank::transferMoneyInnerClients(std::string from, std::string to, double va
     fromClient->transferMoneyToAnotherClientInBank(value, toClient, getComissionPercent());
 }
 
-void Bank::transferMoneyToAnotherBankClient(std::string from, Bank* anotherBank, std::string to, double value) {
+void Bank::transferMoneyToAnotherBankClient(const std::string& from, Bank* anotherBank, const std::string& to, double value) {
     if (!hasClientWithFio(from) || !anotherBank->hasClientWithFio(to))
         return;
 
     Client* clientF =  getClientByFio(from);
     Client* clientT = anotherBank->getClientByFio(to);
 
-    JurClient* jurFrom = dynamic_cast<JurClient*>(clientF);
-    JurClient* jurTo = dynamic_cast<JurClient*>(clientT);
-
-    if(jurFrom && jurTo) {
-        _balance += value * (1 - 0.01 * getComissionPercent());
-        jurFrom->transferMoneyToAnotherBankClient(value, jurTo, getComissionPercent(), anotherBank->getComissionPercent());
+    if(clientT->canReceiveMoneyFromOuter()) {
+        double moneyAfterCommission = value * (1 - 0.01 * getComissionPercent());
+        _balance += moneyAfterCommission;
+        clientF->transferMoneyToAnotherClientInBank(moneyAfterCommission, clientT, getComissionPercent());
     } else {
-        std::cout << "You have selected not a jur accounts" << endl;
+        std::cout << "You have selected an account without access to transfer from outer bank" << endl;
     }
 }
 
-void Bank::removeClientByFio(std::string fio) {
+void Bank::removeClientByFio(const std::string& fio) {
     if(hasClientWithFio(fio)) {
         _clients.erase(fio);
         cout << "Client successfully deleted from bank: " << getName() << endl;

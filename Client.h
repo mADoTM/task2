@@ -23,6 +23,8 @@ public:
     Account* getAccount();
 
     std::string getFio() { return _fio; }
+
+    virtual bool canReceiveMoneyFromOuter() { return false; };
 };
 
 #endif //TASK2_CLIENT_H

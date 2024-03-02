@@ -6,5 +6,7 @@
 class PhysicalClient: public Client {
 public:
     PhysicalClient(Account* account, std::string basicString);
+
+    bool canReceiveMoneyFromOuter() override { return false; }
 };
 
