@@ -47,7 +47,7 @@ void Bank::transferMoneyToAnotherBankClient(const std::string& from, Bank* anoth
         _balance += moneyAfterCommission;
         clientF->transferMoneyToAnotherClientInBank(moneyAfterCommission, clientT, getComissionPercent());
     } else {
-        std::cout << "You have selected an account without access to transfer from outer bank" << endl;
+        throw std::invalid_argument("Transaction is cancelled. You've selected an account with no access to transfer from outer bank");
     }
 }
 

@@ -48,11 +48,16 @@ void transferMoneyOuter() {
     }
 
 
-    banks.find(bankNameFrom)->second->transferMoneyToAnotherBankClient(
-            fioFrom,
-            banks.find(bankNameTo)->second,
-            fioTo,
-            value);
+    try {
+        banks.find(bankNameFrom)->second->transferMoneyToAnotherBankClient(
+                fioFrom,
+                banks.find(bankNameTo)->second,
+                fioTo,
+                value);
+    }
+    catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void addMoneyToAccount() {
