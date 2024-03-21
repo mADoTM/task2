@@ -16,6 +16,7 @@ private:
     double _balance;
 public:
     Bank();
+    ~Bank();
 
     virtual std::string getName() const { return "Bank"; };
 

@@ -12,3 +12,8 @@ void JurClient::transferMoneyToAnotherBankClient(double value, JurClient *anothe
 
 JurClient::JurClient(Account* account, std::string basicString) : Client(account, basicString) {
 }
+
+bool JurClient::canSendMoneyToAnotherBankClient(Client *target) {
+    auto jurTo = dynamic_cast<JurClient*>(target);
+    return jurTo;
+}

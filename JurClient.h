@@ -14,7 +14,7 @@ public:
 
     void transferMoneyToAnotherBankClient(double value, JurClient *another, int bankFromPercent, int bankToPercent);
 
-    bool canReceiveMoneyFromOuter() override { return true; }
+    bool canSendMoneyToAnotherBankClient(Client* target) override;
 };
 
 #endif //TASK2_JURCLIENT_H

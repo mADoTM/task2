@@ -11,11 +11,14 @@ Client::Client(Account* account, std::string fio)
 {}
 
 void Client::transferMoneyToAnotherClientInBank(double value, Client* another, int bankPercent) {
-    value *= (1 - 0.01 * bankPercent);
-    getAccount()->takeDeposit(value);
+    getAccount()->takeDeposit(value * (1 + 0.01 * bankPercent));
     another->getAccount()->addDeposit(value);
 }
 
 Account* Client::getAccount() {
     return _account;
+}
+
+Client::~Client() {
+    delete _account;
 }

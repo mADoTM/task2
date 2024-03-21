@@ -9,22 +9,24 @@
 
 class Client {
 private:
-    Account* _account;
+    Account *_account;
     std::string _fio;
 public:
-    Client(Account* account, std::string fio);
+    Client(Account *account, std::string fio);
 
-    void transferMoneyToAnotherClientInBank(double value, Client* another, int bankPercent);
+    ~Client();
+
+    void transferMoneyToAnotherClientInBank(double value, Client *another, int bankPercent);
 
     virtual void addDeposit(double value) { _account->addDeposit(value); }
 
     void withDraw(double value) { _account->takeDeposit(value); }
 
-    Account* getAccount();
+    Account *getAccount();
 
     std::string getFio() { return _fio; }
 
-    virtual bool canReceiveMoneyFromOuter() { return false; };
+    virtual bool canSendMoneyToAnotherBankClient(Client *target) { return false; }
 };
 
 #endif //TASK2_CLIENT_H

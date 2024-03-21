@@ -140,7 +140,12 @@ void transferMoneyInner() {
         return;
     }
 
-    banks.find(bankName)->second->transferMoneyInnerClients(fioFrom, fioTo, value);
+    try {
+        banks.find(bankName)->second->transferMoneyInnerClients(fioFrom, fioTo, value);
+    }
+    catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+    }
 }
 
 void removeUserFromBank() {

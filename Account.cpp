@@ -24,4 +24,7 @@ void Account::addDeposit(double value) {
 void Account::takeDeposit(double value) {
     if (_balance > value)
         _balance = _balance - value;
+    else
+        throw std::invalid_argument("Transaction is cancelled. You've selected an account with no enough money");
 }
+

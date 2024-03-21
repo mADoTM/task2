@@ -42,10 +42,10 @@ void Bank::transferMoneyToAnotherBankClient(const std::string& from, Bank* anoth
     Client* clientF =  getClientByFio(from);
     Client* clientT = anotherBank->getClientByFio(to);
 
-    if(clientT->canReceiveMoneyFromOuter()) {
-        double moneyAfterCommission = value * (1 - 0.01 * getComissionPercent());
-        _balance += moneyAfterCommission;
-        clientF->transferMoneyToAnotherClientInBank(moneyAfterCommission, clientT, getComissionPercent());
+    if(clientF->canSendMoneyToAnotherBankClient(clientT)) {
+        double commission = value * (1 - 0.01 * getComissionPercent());
+        _balance += commission;
+        clientF->transferMoneyToAnotherClientInBank(value, clientT, getComissionPercent());
     } else {
         throw std::invalid_argument("Transaction is cancelled. You've selected an account with no access to transfer from outer bank");
     }
@@ -58,5 +58,11 @@ void Bank::removeClientByFio(const std::string& fio) {
     }
     else {
         cout << "Client not found in bank - " << getName() << endl;
+    }
+}
+
+Bank::~Bank() {
+    for (auto & client : _clients) {
+        delete client.second;
     }
 }
